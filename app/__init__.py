@@ -5,12 +5,12 @@ from app.blueprints.customers import customer_bp
 from app.blueprints.mechanics import mechanic_bp
 from app.blueprints.serviceTickets import service_ticket_bp
 from app.blueprints.inventory import inventory_bp
-from config import DevelopmentConfig, TestingConfig
-
+from config import DevelopmentConfig, TestingConfig, ProductionConfig
 
 config_by_name = {
     "development": DevelopmentConfig,
     "testing": TestingConfig,
+    "production": ProductionConfig,
 }
 
 def create_app(config_name):
