@@ -7,8 +7,12 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 import logging
 
+
 #originally, this was app = create_app('DelopmentConfig')
-app = create_app('ProductionConfig')
+#app = create_app('ProductionConfig')
+config_name = 'ProductionConfig'
+app = create_app(config_name)
+
 
 logging.basicConfig(level=logging.DEBUG)
 app.logger.info("Flask app initialized with Production configuration.")
@@ -101,3 +105,15 @@ if __name__ == "__main__":
 # Method 2: Reinstall Flask-CORS
 # pip uninstall flask-cors
 # pip install flask-cors --force-reinstall
+
+'''
+git add flask_app.py config.py
+git commit -m "Fix ProductionConfig and add environment variable handling"
+git push origin main
+
+#other thing
+git add .
+git remote add origin git@github.com:AlexFairy/AprilFinal.git
+git commit -m "new repo"  
+git push origin main
+'''
