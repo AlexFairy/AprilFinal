@@ -3,10 +3,10 @@ info:
   version: "1.0.0"
   title: "Mechanic Shop"
   description: "Module 2 for API"
-host: "https://mechanic-api-v2.onrender.com"
-basePath: "/"
+host: "mechanic-api-v2.onrender.com"
+basePath: ""
 schemes:
-  - "http"
+  - "https"
 securityDefinitions:
   BearerAuth:
     type: "apiKey"
