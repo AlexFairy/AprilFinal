@@ -17,7 +17,6 @@ class TestCustomers(unittest.TestCase):
             "phone_number": "+34954321678",
             "salary": 35000})
 
-        # Create a customer for authentication and testing
         customer_response = self.client.post('/customers/', json={
             "name": "Basilia Millian",
             "phone_number": "+34305975931",
@@ -62,8 +61,9 @@ class TestCustomers(unittest.TestCase):
         response = self.client.post('/customers/', json=payload)
         self.assertEqual(response.status_code, 400)
 
+    #added a slash
     def test_get_customers(self):
-        response = self.client.get('/customers?page=1&per_page=3')
+        response = self.client.get('/customers/?page=1&per_page=3')
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
         self.assertIn("customers", data)
@@ -153,12 +153,24 @@ class TestCustomers(unittest.TestCase):
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
             "eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ."
             "invalidsignature"
+    )
+        headers = {"Authorization": f"Bearer {fake_token}"}
+        response = self.client.get('/customers/my-tickets', headers=headers)
+        self.assertEqual(response.status_code, 403)
+        self.assertIn("Invalid token signature", response.get_json()["error"])
+'''
+    def test_my_tickets_with_invalid_token(self):
+        fake_token = (
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+            "eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ."
+            "invalidsignature"
         )
         headers = {"Authorization": f"Bearer {fake_token}"}
 
         response = self.client.get('/customers/my-tickets', headers=headers)
         self.assertEqual(response.status_code, 403)
         self.assertIn("Invalid token", response.get_json()["error"])
+'''
 
 
 if __name__ == '__main__':

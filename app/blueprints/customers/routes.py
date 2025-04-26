@@ -142,31 +142,30 @@ def search_customer():
                        "mechanical_issue": customer.mechanical_issue} for customer in customers]
     return jsonify(customers_list), 200
 
-
+#I HAD TO UPDATE THIS PUT
 @customer_bp.route("/<int:id>", methods=["PUT"])
 def update_customer(id):
+    customer = db.session.query(Customers).filter_by(id=id).first()
+    if not customer:
+        return jsonify({"message": "Customer not found"}), 404
+
     try:
-        customer = db.session.query(Customers).filter_by(id=id).first()
-        if not customer:
-            return jsonify({"message": "Customer not found"}), 404
+        update_data = update_customer_schema.load(request.json)
+    except ValidationError as e:
+        return jsonify(e.messages), 400
 
-        try:
-            update_data = update_customer_schema.load(request.json)
-        except ValidationError as e:
-            return jsonify(e.messages), 400
+    customer.name = update_data.get("name", customer.name)
+    customer.email = update_data.get("email", customer.email)
+    customer.phone_number = update_data.get("phone_number", customer.phone_number)
 
-        customer.name = update_data.get("name", customer.name)
-        customer.email = update_data.get("email", customer.email)
+    db.session.commit()
 
-        db.session.commit()
-
-        return jsonify({
-            "id": customer.id,
-            "name": customer.name,
-            "email": customer.email}), 200
-    except Exception as e:
-        print(f"Error updating customer: {str(e)}")
-        return jsonify({"message": "Error occurred while updating customer"}), 500
+    return jsonify({
+        "id": customer.id,
+        "name": customer.name,
+        "email": customer.email,
+        "phone_number": customer.phone_number
+    }), 200
 
 
 @customer_bp.route("/<int:id>", methods=['DELETE'])
