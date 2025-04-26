@@ -2,7 +2,7 @@ from app import create_app
 from app.models import db
 from app.blueprints.customers import customer_bp
 
-from flask import send_from_directory, jsonify
+from flask import send_from_directory, jsonify, redirect, request
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 import logging
@@ -19,6 +19,12 @@ app = create_app(config_name)
 
 logging.basicConfig(level=logging.DEBUG)
 app.logger.info("Flask app initialized with Production configuration.")
+
+#FORCING HTTPS
+@app.before_request
+def force_https():
+    if not request.is_secure:
+        return redirect(request.url.replace("http://", "https://"), code=301)
 
 #for CORS
 CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
