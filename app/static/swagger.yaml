@@ -3,7 +3,7 @@ info:
   version: "1.0.0"
   title: "Mechanic Shop"
   description: "Module 2 for API"
-host: "localhost:5000"
+host: "https://mechanic-api-v2.onrender.com"
 basePath: "/"
 schemes:
   - "http"
